@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss} %-5level %logger - %marker %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%d{HH:mm:ss} %-5level %logger - %marker %msg%n</pattern>
+    </layout>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/testportal-tools-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>14</maxHistory>
+    </rollingPolicy>
+  </appender>
+  
+  <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+        <marker>AUDIT</marker>
+      </evaluator>
+      <onMismatch>DENY</onMismatch>
+      <onMatch>NEUTRAL</onMatch>
+    </filter>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%d{yyyy/MM/dd HH:mm:ss} %marker %msg%n</pattern>
+    </layout>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/testportal-tools-audit-%d{yyyy-MM}.log.gz</fileNamePattern>
+      <maxHistory>60</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+    <appender-ref ref="AUDIT" />
+  </root>
+
+  <logger name="github.nakamura_t0428" level="debug" />
+  <logger name="ch.qos.logback" level="warn" />
+  <logger name="s.slick.jdbc" level="warn" />
+  <logger name="scala.slick" level="warn" />
+  <logger name="scala.slick.jdbc.JdbcBackend.statement" level="info" />
+  <logger name="bootstrap.liftweb" level="info" />
+</configuration>

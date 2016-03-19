@@ -1,0 +1,10 @@
+.project
+.settings
+.cache
+.cache-main
+.cache-tests
+.classpath
+.project
+build.properties
+target
+*.log
